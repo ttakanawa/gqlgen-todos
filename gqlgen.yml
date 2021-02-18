@@ -36,6 +36,7 @@ resolver:
 # if they match it will use them, otherwise it will generate them.
 autobind:
   - "github.com/yawnkinsfolk/gqlgen-todos/graph/model"
+  - "github.com/yawnkinsfolk/gqlgen-todos/domains"
 
 # This section declares type mapping between the GraphQL and go type systems
 #
@@ -46,9 +47,7 @@ models:
   ID:
     model:
       - github.com/99designs/gqlgen/graphql.ID
-      - github.com/99designs/gqlgen/graphql.Int
-      - github.com/99designs/gqlgen/graphql.Int64
-      - github.com/99designs/gqlgen/graphql.Int32
+      - github.com/yawnkinsfolk/gqlgen-todos/domains.TodoID
   Int:
     model:
       - github.com/99designs/gqlgen/graphql.Int

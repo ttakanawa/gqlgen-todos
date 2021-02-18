@@ -5,18 +5,35 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
+	"github.com/yawnkinsfolk/gqlgen-todos/domains"
 	"github.com/yawnkinsfolk/gqlgen-todos/graph/generated"
 	"github.com/yawnkinsfolk/gqlgen-todos/graph/model"
 )
 
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented"))
+func (r *mutationResolver) CreateTodo(ctx context.Context, input model.CreaateTodoInput) (*domains.Todo, error) {
+	return r.TodoRepository.Create(ctx, &domains.Todo{
+		Text: input.Text,
+	})
 }
 
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented"))
+func (r *mutationResolver) UpdateTodo(ctx context.Context, input model.UpdateToDoInput) (*domains.Todo, error) {
+	todo, err := r.TodoRepository.Get(ctx, domains.TodoID(input.ID))
+	if err != nil {
+		return nil, err
+	}
+	if input.Text != nil {
+		todo.Text = *input.Text
+	}
+	if input.Done != nil {
+		todo.Done = *input.Done
+	}
+
+	return r.TodoRepository.Update(ctx, todo)
+}
+
+func (r *queryResolver) Todos(ctx context.Context) ([]*domains.Todo, error) {
+	return r.TodoRepository.GetAll(ctx)
 }
 
 // Mutation returns generated.MutationResolver implementation.

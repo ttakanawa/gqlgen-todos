@@ -1,6 +1,9 @@
 package main
 
+//go:generate go run github.com/99designs/gqlgen
+
 import (
+	"github.com/yawnkinsfolk/gqlgen-todos/domains"
 	"log"
 	"net/http"
 	"os"
@@ -19,7 +22,15 @@ func main() {
 		port = defaultPort
 	}
 
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
+	srv := handler.NewDefaultServer(
+		generated.NewExecutableSchema(
+			generated.Config{
+				Resolvers: &graph.Resolver{
+					TodoRepository: domains.NewTodoRepository(),
+				},
+			},
+		),
+	)
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
