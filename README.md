@@ -36,7 +36,7 @@ mutation Create {
 
 mutation Update {
   updateTodo(input: {
-    id: "a424e1cf-fb13-4d2c-a772-9eda5425e24a"
+    id: "some id that data you created before"
     text: "Test A!"
     done: true
   }) {
